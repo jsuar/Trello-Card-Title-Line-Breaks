@@ -1,6 +1,8 @@
 function addLineBreaks() {
     var lineBreakDelimiter = ""
-    chrome.storage.sync.get('savedDelimiter', function (obj) {
+    chrome.storage.sync.get({
+    'savedDelimiter': '|'
+    }, function (obj) {
         lineBreakDelimiter = obj.savedDelimiter;
         
         var cardTitles = document.querySelectorAll('.list-card-title');
@@ -25,9 +27,9 @@ var observer = new MutationObserver(function(mutations) {
             value: mutation.target.textContent,
             oldValue: mutation.oldValue
         };
-        
-        if (mutation.target.className.indexOf("list-card-title") != -1) {
-           //console.log("Recording mutation:", entry);
+        //console.log("Recording mutation:", entry);
+        if (mutation.target.className.indexOf("list-card-title") != -1 || 
+            mutation.target.className.indexOf("js-menu-action-list") != -1) {           
            addLineBreaks(); 
         }
     });
