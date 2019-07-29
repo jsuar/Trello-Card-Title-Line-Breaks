@@ -1,17 +1,28 @@
-// Saves options to chrome.storage.sync.
-function save_options() {
-  var delimiter = document.getElementById('delimiter').value;
-  
-  chrome.storage.sync.set({
-    'savedDelimiter': delimiter
-  }, function() {
-    // Update status to let user know options were saved.
-    var status = document.getElementById('status');
-    status.textContent = 'Options saved.';
+
+function setElementTextById(elementName, text, clear) {
+  var status = document.getElementById(elementName);
+  status.textContent = text;
+  if ( clear == true ) {
     setTimeout(function() {
       status.textContent = '';
     }, 750);
-  });
+  }
+}
+
+// Saves options to chrome.storage.sync.
+function save_options() {
+  var delimiter = document.getElementById('delimiter').value;
+
+  if ( delimiter.length != 1 ) {
+    setElementTextById('status', 'Only one delimeter allowed.', false);
+  } else {
+    // Store delimeter
+    chrome.storage.sync.set({
+      'savedDelimiter': delimiter
+    }, function() {
+      setElementTextById('status', 'Options saved.', true);
+    });
+  }
 }
 
 // Restores select box and checkbox state using the preferences
