@@ -8,15 +8,14 @@ function addLineBreaks() {
         var cardTitles = document.querySelectorAll('.list-card-title');
 
         for (t of cardTitles) {
-            while(t.innerText.indexOf(lineBreakDelimiter) != -1) {            
-                console.log(lineBreakDelimiter, t.innerHTML);
+            while(t.innerText.indexOf(lineBreakDelimiter) != -1) {         
+                // For debugging   
+                // console.log("Replacing: ", lineBreakDelimiter, " in ", t.innerHTML);
                 t.innerHTML = t.innerHTML.replace(lineBreakDelimiter,"<br />");
             }
         }
     });
 }
-
-addLineBreaks();
 
 var elementToObserve = document.querySelector("#board,#content");
 var observer = new MutationObserver(function(mutations) {
@@ -27,8 +26,13 @@ var observer = new MutationObserver(function(mutations) {
             value: mutation.target.textContent,
             oldValue: mutation.oldValue
         };
-        //console.log("Recording mutation:", entry);
-        if (mutation.target.className.indexOf("list-card-title") != -1 || 
+        
+        // For debugging
+        // console.log("Recording mutation:", entry);
+
+        if (mutation.target.className.indexOf("list-card") != -1 ||
+            mutation.target.className.indexOf("list-cards") != -1 ||
+            mutation.target.className.indexOf("list-card-title") != -1 || 
             mutation.target.className.indexOf("js-menu-action-list") != -1) {           
            addLineBreaks(); 
         }
@@ -42,3 +46,5 @@ observer.observe(elementToObserve, {
     characterDataOldValue: true,
     subtree: true
 });
+
+addLineBreaks();
